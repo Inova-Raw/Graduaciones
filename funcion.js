@@ -1,154 +1,160 @@
+
+/* =====================================================
+   INOVA RAW | JAVASCRIPT PROFESIONAL
+   FOTOGRAFÍA Y VIDEO PROFESIONAL
+===================================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================================
-    // VARIABLES
-    // =========================================
-
-    const navButtons =
-    document.querySelectorAll('.nav-btn');
-
-    const sections =
-    document.querySelectorAll('.section');
-
-    const heroButtons =
-    document.querySelectorAll('.open-section');
-
-    const packageTabs =
-    document.querySelectorAll('.package-tab');
-
-    const packageContents =
-    document.querySelectorAll('.package-content');
-
-    const whatsappButtons =
-    document.querySelectorAll('.whatsapp-btn');
-
-    const galleryImages =
-    document.querySelectorAll('.gallery-item img');
-
-    const lightbox =
-    document.querySelector('.lightbox');
-
-    const lightboxImg =
-    document.querySelector('.lightbox-img');
-
-    const closeLightbox =
-    document.querySelector('.close-lightbox');
+    "use strict";
 
 
+    /* =================================================
+       1. ELEMENTOS PRINCIPALES
+    ================================================= */
 
-    // =========================================
-    // SHOW SECTION
-    // =========================================
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const sections = document.querySelectorAll(".section");
+    const heroButtons = document.querySelectorAll(".open-section");
 
-    function showSection(id){
+    const galleryImages = document.querySelectorAll(".gallery-item img");
+
+    const lightbox = document.querySelector(".lightbox");
+    const lightboxImg = document.querySelector(".lightbox-img");
+    const closeLightbox = document.querySelector(".close-lightbox");
+
+    const header = document.querySelector(".header");
+    const currentYear = document.querySelector("#current-year");
+
+    const cards = document.querySelectorAll(".card");
+
+
+    /* =================================================
+       2. CONFIGURACIÓN GENERAL
+    ================================================= */
+
+    const CONFIG = {
+        brand: "INOVA RAW",
+        photographer: "CÈSAR PORTILLO",
+        whatsapp: "50373859232",
+        defaultSection: "inicio"
+    };
+
+
+    /* =================================================
+       3. NAVEGACIÓN ENTRE SECCIONES
+    ================================================= */
+
+    function showSection(sectionId) {
+
+        const targetSection = document.getElementById(sectionId);
+
+        if (
+            !targetSection ||
+            !targetSection.classList.contains("section")
+        ) {
+            console.warn(
+                `INOVA RAW: NO EXISTE LA SECCIÓN "${sectionId}".`
+            );
+            return;
+        }
+
+        // OCULTAR TODAS LAS SECCIONES
 
         sections.forEach(section => {
 
-            section.classList.remove('active-section');
+            section.classList.remove("active-section");
+
+            section.setAttribute("aria-hidden", "true");
 
         });
+
+
+        // DESACTIVAR BOTONES DEL MENÚ
 
         navButtons.forEach(button => {
 
-            button.classList.remove('active');
+            button.classList.remove("active");
+
+            button.removeAttribute("aria-current");
 
         });
 
-        const activeSection =
-        document.getElementById(id);
 
-        if(activeSection){
+        // MOSTRAR SECCIÓN SELECCIONADA
 
-            activeSection.classList.add('active-section');
+        targetSection.classList.add("active-section");
+
+        targetSection.setAttribute("aria-hidden", "false");
+
+
+        // ACTIVAR BOTÓN CORRESPONDIENTE
+
+        const activeButton = document.querySelector(
+            `.nav-btn[data-section="${sectionId}"]`
+        );
+
+        if (activeButton) {
+
+            activeButton.classList.add("active");
+
+            activeButton.setAttribute("aria-current", "page");
 
         }
 
-        const activeButton =
-        document.querySelector(`[data-section="${id}"]`);
 
-        if(activeButton){
+        // CERRAR LIGHTBOX
 
-            activeButton.classList.add('active');
+        closeBox();
 
-        }
+
+        // VOLVER AL INICIO DE LA PÁGINA
 
         window.scrollTo({
 
             top: 0,
-            behavior: 'smooth'
+
+            behavior: "smooth"
 
         });
 
     }
 
 
-
-    // =========================================
-    // NAVIGATION
-    // =========================================
+    /* =================================================
+       4. EVENTOS DEL MENÚ DE NAVEGACIÓN
+    ================================================= */
 
     navButtons.forEach(button => {
 
-        button.addEventListener('click', () => {
+        button.addEventListener("click", () => {
 
-            const section =
-            button.dataset.section;
+            const sectionId = button.dataset.section;
 
-            showSection(section);
+            if (sectionId) {
+
+                showSection(sectionId);
+
+            }
 
         });
 
     });
 
 
-
-    // =========================================
-    // HERO BUTTONS
-    // =========================================
+    /* =================================================
+       5. BOTONES DE LA PORTADA
+    ================================================= */
 
     heroButtons.forEach(button => {
 
-        button.addEventListener('click', () => {
+        button.addEventListener("click", () => {
 
-            const section =
-            button.dataset.open;
+            const sectionId = button.dataset.open;
 
-            showSection(section);
+            if (sectionId) {
 
-        });
-
-    });
-
-
-
-    // =========================================
-    // PACKAGE TABS
-    // =========================================
-
-    packageTabs.forEach(tab => {
-
-        tab.addEventListener('click', () => {
-
-            packageTabs.forEach(btn => {
-
-                btn.classList.remove('active-tab');
-
-            });
-
-            packageContents.forEach(content => {
-
-                content.classList.remove('active-package');
-
-            });
-
-            tab.classList.add('active-tab');
-
-            const target =
-            document.getElementById(tab.dataset.package);
-
-            if(target){
-
-                target.classList.add('active-package');
+                showSection(sectionId);
 
             }
 
@@ -157,300 +163,406 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    /* =================================================
+       6. LIGHTBOX - ABRIR FOTOGRAFÍAS
+    ================================================= */
 
-    // =========================================
-    // WHATSAPP
-    // =========================================
+    function openLightbox(image) {
 
-    whatsappButtons.forEach(button => {
+        if (!lightbox || !lightboxImg || !image) {
+            return;
+        }
 
-        button.addEventListener('click', () => {
+        const imageSource = image.currentSrc || image.src;
 
-            const card =
-            button.closest('.card');
+        if (!imageSource) {
+            return;
+        }
 
-            const packageName =
-            card.querySelector('h3').innerText;
+        lightboxImg.src = imageSource;
 
-            const packagePrice =
-            card.querySelector('h4').innerText;
+        lightboxImg.alt = image.alt || "FOTOGRAFÍA DE INOVA RAW";
 
-            const packageItems =
-            card.querySelectorAll('ul li');
+        lightbox.classList.add("active-lightbox");
 
-            let details = "";
+        lightbox.setAttribute("aria-hidden", "false");
 
-            packageItems.forEach(item => {
+        document.body.style.overflow = "hidden";
 
-                details += `• ${item.innerText}\n`;
+        if (closeLightbox) {
 
-            });
+            closeLightbox.focus();
 
-            const message =
-
-`Hola 👋
-
-Quiero contratar este paquete:
-
-📸 ${packageName}
-
-💵 Precio: ${packagePrice}
-
-📋 Detalles:
-${details}
-
-Gracias 👌
-Quedo pendiente de disponibilidad.`;
-
-            const url =
-`https://wa.me/50379096995?text=${encodeURIComponent(message)}`;
-
-            window.open(url, '_blank');
-
-        });
-
-    });
-
-
-
-    // =========================================
-    // LIGHTBOX OPEN
-    // =========================================
-
-    galleryImages.forEach(image => {
-
-        image.addEventListener('click', () => {
-
-            lightbox.classList.add('active-lightbox');
-
-            lightboxImg.src = image.src;
-
-            document.body.style.overflow = "hidden";
-
-        });
-
-    });
-
-
-
-    // =========================================
-    // CLOSE LIGHTBOX
-    // =========================================
-
-    function closeBox(){
-
-        lightbox.classList.remove('active-lightbox');
-
-        document.body.style.overflow = "auto";
+        }
 
     }
 
-    closeLightbox.addEventListener('click', closeBox);
+
+    galleryImages.forEach(image => {
+
+        // PERMITIR CLIC EN LAS FOTOGRAFÍAS
+
+        image.style.cursor = "pointer";
+
+        // ACCESIBILIDAD
+
+        image.setAttribute("tabindex", "0");
+
+        image.setAttribute("role", "button");
+
+        image.setAttribute(
+            "aria-label",
+            "AMPLIAR " + (image.alt || "FOTOGRAFÍA")
+        );
 
 
+        image.addEventListener("click", () => {
 
-    // =========================================
-    // CLOSE OUTSIDE
-    // =========================================
+            openLightbox(image);
 
-    lightbox.addEventListener('click', (e) => {
-
-        if(e.target === lightbox){
-
-            closeBox();
-
-        }
-
-    });
+        });
 
 
+        // ABRIR CON ENTER O ESPACIO
 
-    // =========================================
-    // ESC CLOSE
-    // =========================================
+        image.addEventListener("keydown", event => {
 
-    document.addEventListener('keydown', (e) => {
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
 
-        if(e.key === "Escape"){
+                event.preventDefault();
 
-            closeBox();
-
-        }
-
-    });
-
-
-
-    // =========================================
-    // CARD ANIMATION
-    // =========================================
-
-    const cards =
-    document.querySelectorAll('.card');
-
-    const observer =
-    new IntersectionObserver((entries) => {
-
-        entries.forEach(entry => {
-
-            if(entry.isIntersecting){
-
-                entry.target.style.opacity = "1";
-
-                entry.target.style.transform =
-                "translateY(0px)";
+                openLightbox(image);
 
             }
 
         });
 
-    }, {
-        threshold: 0.2
-    });
-
-    cards.forEach(card => {
-
-        card.style.opacity = "0";
-
-        card.style.transform =
-        "translateY(40px)";
-
-        card.style.transition =
-        ".6s ease";
-
-        observer.observe(card);
-
     });
 
 
+    /* =================================================
+       7. LIGHTBOX - CERRAR FOTOGRAFÍAS
+    ================================================= */
 
-    // =========================================
-    // IMAGE PRELOAD
-    // =========================================
+    function closeBox() {
 
-    window.addEventListener('load', () => {
+        if (!lightbox) {
+            return;
+        }
 
-        galleryImages.forEach(img => {
+        lightbox.classList.remove("active-lightbox");
 
-            const image = new Image();
+        lightbox.setAttribute("aria-hidden", "true");
 
-            image.src = img.src;
+        document.body.style.overflow = "";
 
-        });
+        if (lightboxImg) {
 
-    });
+            lightboxImg.removeAttribute("src");
 
-
-
-    // =========================================
-    // BLOCK RIGHT CLICK
-    // =========================================
-
-    document.querySelectorAll('img').forEach(img => {
-
-        img.addEventListener('contextmenu', (e) => {
-
-            e.preventDefault();
-
-        });
-
-    });
-
-
-
-    // =========================================
-    // IMAGE HOVER EFFECT
-    // =========================================
-
-    galleryImages.forEach(img => {
-
-        img.addEventListener('mouseenter', () => {
-
-            img.style.transform = "scale(1.08)";
-
-        });
-
-        img.addEventListener('mouseleave', () => {
-
-            img.style.transform = "scale(1)";
-
-        });
-
-    });
-
-
-
-    // =========================================
-    // ACTIVE START
-    // =========================================
-
-    showSection('inicio');
-
-
-
-    // =========================================
-    // SCROLL HEADER EFFECT
-    // =========================================
-
-    window.addEventListener('scroll', () => {
-
-        const header =
-        document.querySelector('.header');
-
-        if(window.scrollY > 50){
-
-            header.style.background =
-            "rgba(0,0,0,0.95)";
-
-            header.style.boxShadow =
-            "0 5px 20px rgba(0,0,0,.4)";
+            lightboxImg.alt = "";
 
         }
-        else{
 
-            header.style.background =
-            "rgba(0,0,0,0.8)";
+    }
 
-            header.style.boxShadow =
-            "none";
+
+    if (closeLightbox) {
+
+        closeLightbox.addEventListener("click", closeBox);
+
+    }
+
+
+    /* =================================================
+       8. CERRAR LIGHTBOX AL HACER CLIC FUERA
+    ================================================= */
+
+    if (lightbox) {
+
+        lightbox.addEventListener("click", event => {
+
+            if (event.target === lightbox) {
+
+                closeBox();
+
+            }
+
+        });
+
+    }
+
+
+    /* =================================================
+       9. CERRAR LIGHTBOX CON ESCAPE
+    ================================================= */
+
+    document.addEventListener("keydown", event => {
+
+        if (
+            event.key === "Escape" &&
+            lightbox?.classList.contains("active-lightbox")
+        ) {
+
+            closeBox();
 
         }
 
     });
 
 
+    /* =================================================
+       10. AÑO AUTOMÁTICO DEL FOOTER
+    ================================================= */
 
-    // =========================================
-    // BUTTON EFFECT
-    // =========================================
+    if (currentYear) {
 
-    const allButtons =
-    document.querySelectorAll('button');
+        currentYear.textContent = new Date().getFullYear();
 
-    allButtons.forEach(button => {
+    }
 
-        button.addEventListener('mouseenter', () => {
 
-            button.style.transform =
-            "translateY(-3px)";
+    /* =================================================
+       11. EFECTO DEL HEADER AL DESPLAZARSE
+    ================================================= */
+
+    function updateHeader() {
+
+        if (!header) {
+            return;
+        }
+
+        if (window.scrollY > 50) {
+
+            header.classList.add("header-scrolled");
+
+        } else {
+
+            header.classList.remove("header-scrolled");
+
+        }
+
+    }
+
+
+    window.addEventListener("scroll", updateHeader, {
+
+        passive: true
+
+    });
+
+    updateHeader();
+
+
+    /* =================================================
+       12. ANIMACIÓN DE TARJETAS DE PAQUETES
+    ================================================= */
+
+    if ("IntersectionObserver" in window) {
+
+        const cardObserver = new IntersectionObserver(
+
+            (entries, observer) => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("card-visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+
+            {
+                threshold: 0.15
+            }
+
+        );
+
+
+        cards.forEach(card => {
+
+            card.classList.add("card-animated");
+
+            cardObserver.observe(card);
 
         });
 
-        button.addEventListener('mouseleave', () => {
+    } else {
 
-            button.style.transform =
-            "translateY(0px)";
+        cards.forEach(card => {
+
+            card.classList.add("card-visible");
+
+        });
+
+    }
+
+
+    /* =================================================
+       13. COMPROBACIÓN DE CARGA DE FOTOGRAFÍAS
+    ================================================= */
+
+    galleryImages.forEach(image => {
+
+        image.addEventListener("error", () => {
+
+            console.warn(
+                "INOVA RAW: NO SE PUDO CARGAR LA IMAGEN:",
+                image.src
+            );
+
+            image.classList.add("image-error");
+
+        });
+
+
+        image.addEventListener("load", () => {
+
+            image.classList.remove("image-error");
+
+        });
+
+
+        // COMPROBAR IMÁGENES QUE YA TERMINARON DE CARGAR
+
+        if (image.complete && image.naturalWidth === 0) {
+
+            image.classList.add("image-error");
+
+        }
+
+    });
+
+
+    /* =================================================
+       14. PROTECCIÓN DEL MENÚ CONTEXTUAL
+    ================================================= */
+
+    document.querySelectorAll(
+        ".gallery-item img, .about-image img"
+    ).forEach(image => {
+
+        image.addEventListener("contextmenu", event => {
+
+            event.preventDefault();
 
         });
 
     });
 
 
+    /* =================================================
+       15. EVITAR ARRASTRAR FOTOGRAFÍAS
+    ================================================= */
 
-    // =========================================
-    // CONSOLE
-    // =========================================
+    document.querySelectorAll("img").forEach(image => {
 
-    console.log("CLICKEO FOTOGRAFÍA CARGADO");
+        image.setAttribute("draggable", "false");
+
+        image.addEventListener("dragstart", event => {
+
+            event.preventDefault();
+
+        });
+
+    });
+
+
+    /* =================================================
+       16. VALIDACIÓN DE ENLACES DE WHATSAPP
+    ================================================= */
+
+    document.querySelectorAll(
+        ".contract-btn, .contact-whatsapp"
+    ).forEach(link => {
+
+        const href = link.getAttribute("href");
+
+        if (!href || !href.includes("wa.me/")) {
+
+            console.warn(
+                "INOVA RAW: REVISA EL ENLACE DE WHATSAPP:",
+                link
+            );
+
+        }
+
+    });
+
+
+    /* =================================================
+       17. VALIDACIÓN DE BOTONES DE NAVEGACIÓN
+    ================================================= */
+
+    const validSections = [
+        "inicio",
+        "sobre",
+        "galeria",
+        "paquetes",
+        "contacto"
+    ];
+
+    navButtons.forEach(button => {
+
+        const sectionId = button.dataset.section;
+
+        if (!validSections.includes(sectionId)) {
+
+            console.warn(
+                "INOVA RAW: BOTÓN DE NAVEGACIÓN NO VÁLIDO:",
+                button
+            );
+
+        }
+
+    });
+
+
+    /* =================================================
+       18. INICIALIZAR SITIO WEB
+    ================================================= */
+
+    showSection(CONFIG.defaultSection);
+
+
+    /* =================================================
+       19. MENSAJES DE CONSOLA
+    ================================================= */
+
+    console.log(
+
+        `%c ${CONFIG.brand} `,
+
+        "background:#d6b13d;color:#050505;font-size:18px;font-weight:800;padding:10px 20px;border-radius:5px;"
+
+    );
+
+
+    console.log(
+
+        `%c FOTOGRAFÍA Y VIDEO PROFESIONAL | ${CONFIG.photographer}`,
+
+        "color:#d6b13d;font-size:12px;font-weight:bold;"
+
+    );
+
+
+    console.log(
+
+        "%c SITIO WEB CARGADO CORRECTAMENTE.",
+
+        "color:#22c55e;font-size:12px;"
+
+    );
+
 
 });
