@@ -1,49 +1,71 @@
 
-/* =====================================================
+/* =========================================================
    INOVA RAW | JAVASCRIPT PROFESIONAL
    FOTOGRAFÍA Y VIDEO PROFESIONAL
-===================================================== */
+   DESARROLLADO PARA INOVA RAW
+========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     "use strict";
 
 
-    /* =================================================
-       1. ELEMENTOS PRINCIPALES
-    ================================================= */
+    /* =====================================================
+       1. CONFIGURACIÓN GENERAL
+    ===================================================== */
+
+    const CONFIG = {
+
+        brand: "INOVA RAW",
+
+        photographer: "CÈSAR PORTILLO",
+
+        whatsapp: "50373859232",
+
+        defaultSection: "inicio",
+
+        validSections: [
+            "inicio",
+            "sobre",
+            "galeria",
+            "paquetes"
+        ]
+
+    };
+
+
+    /* =====================================================
+       2. ELEMENTOS DEL DOCUMENTO
+    ===================================================== */
 
     const navButtons = document.querySelectorAll(".nav-btn");
+
     const sections = document.querySelectorAll(".section");
+
     const heroButtons = document.querySelectorAll(".open-section");
 
-    const galleryImages = document.querySelectorAll(".gallery-item img");
+    const galleryImages = document.querySelectorAll(
+        ".gallery-item img"
+    );
 
     const lightbox = document.querySelector(".lightbox");
+
     const lightboxImg = document.querySelector(".lightbox-img");
+
     const closeLightbox = document.querySelector(".close-lightbox");
 
     const header = document.querySelector(".header");
+
     const currentYear = document.querySelector("#current-year");
 
     const cards = document.querySelectorAll(".card");
 
-
-    /* =================================================
-       2. CONFIGURACIÓN GENERAL
-    ================================================= */
-
-    const CONFIG = {
-        brand: "INOVA RAW",
-        photographer: "CÈSAR PORTILLO",
-        whatsapp: "50373859232",
-        defaultSection: "inicio"
-    };
+    const packageButtons = document.querySelectorAll(".contract-btn");
 
 
-    /* =================================================
+    /* =====================================================
        3. NAVEGACIÓN ENTRE SECCIONES
-    ================================================= */
+    ===================================================== */
 
     function showSection(sectionId) {
 
@@ -51,13 +73,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (
             !targetSection ||
+            !CONFIG.validSections.includes(sectionId) ||
             !targetSection.classList.contains("section")
         ) {
+
             console.warn(
-                `INOVA RAW: NO EXISTE LA SECCIÓN "${sectionId}".`
+                "INOVA RAW: SECCIÓN NO ENCONTRADA:",
+                sectionId
             );
+
             return;
+
         }
+
 
         // OCULTAR TODAS LAS SECCIONES
 
@@ -88,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         targetSection.setAttribute("aria-hidden", "false");
 
 
-        // ACTIVAR BOTÓN CORRESPONDIENTE
+        // ACTIVAR BOTÓN DEL MENÚ
 
         const activeButton = document.querySelector(
             `.nav-btn[data-section="${sectionId}"]`
@@ -108,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeBox();
 
 
-        // VOLVER AL INICIO DE LA PÁGINA
+        // SUBIR AL INICIO
 
         window.scrollTo({
 
@@ -121,9 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =================================================
-       4. EVENTOS DEL MENÚ DE NAVEGACIÓN
-    ================================================= */
+    /* =====================================================
+       4. EVENTOS DEL MENÚ
+    ===================================================== */
 
     navButtons.forEach(button => {
 
@@ -142,9 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
+    /* =====================================================
        5. BOTONES DE LA PORTADA
-    ================================================= */
+    ===================================================== */
 
     heroButtons.forEach(button => {
 
@@ -163,20 +191,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
+    /* =====================================================
        6. LIGHTBOX - ABRIR FOTOGRAFÍAS
-    ================================================= */
+    ===================================================== */
 
     function openLightbox(image) {
 
         if (!lightbox || !lightboxImg || !image) {
+
             return;
+
         }
 
         const imageSource = image.currentSrc || image.src;
 
         if (!imageSource) {
+
             return;
+
         }
 
         lightboxImg.src = imageSource;
@@ -189,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.body.style.overflow = "hidden";
 
+
         if (closeLightbox) {
 
             closeLightbox.focus();
@@ -198,13 +231,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       7. EVENTOS DE LA GALERÍA
+    ===================================================== */
+
     galleryImages.forEach(image => {
 
-        // PERMITIR CLIC EN LAS FOTOGRAFÍAS
-
         image.style.cursor = "pointer";
-
-        // ACCESIBILIDAD
 
         image.setAttribute("tabindex", "0");
 
@@ -216,6 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+        // ABRIR CON CLIC
+
         image.addEventListener("click", () => {
 
             openLightbox(image);
@@ -223,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // ABRIR CON ENTER O ESPACIO
+        // ABRIR CON TECLADO
 
         image.addEventListener("keydown", event => {
 
@@ -243,14 +278,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       7. LIGHTBOX - CERRAR FOTOGRAFÍAS
-    ================================================= */
+    /* =====================================================
+       8. LIGHTBOX - CERRAR FOTOGRAFÍAS
+    ===================================================== */
 
     function closeBox() {
 
         if (!lightbox) {
+
             return;
+
         }
 
         lightbox.classList.remove("active-lightbox");
@@ -258,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lightbox.setAttribute("aria-hidden", "true");
 
         document.body.style.overflow = "";
+
 
         if (lightboxImg) {
 
@@ -270,6 +308,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    // BOTÓN CERRAR
+
     if (closeLightbox) {
 
         closeLightbox.addEventListener("click", closeBox);
@@ -277,9 +317,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =================================================
-       8. CERRAR LIGHTBOX AL HACER CLIC FUERA
-    ================================================= */
+    /* =====================================================
+       9. CERRAR LIGHTBOX AL HACER CLIC FUERA
+    ===================================================== */
 
     if (lightbox) {
 
@@ -296,9 +336,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =================================================
-       9. CERRAR LIGHTBOX CON ESCAPE
-    ================================================= */
+    /* =====================================================
+       10. CERRAR LIGHTBOX CON ESCAPE
+    ===================================================== */
 
     document.addEventListener("keydown", event => {
 
@@ -314,9 +354,139 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       10. AÑO AUTOMÁTICO DEL FOOTER
-    ================================================= */
+    /* =====================================================
+       11. GENERADOR AUTOMÁTICO DE MENSAJES WHATSAPP
+    ===================================================== */
+
+    function generateWhatsAppMessage(card) {
+
+        if (!card) {
+
+            return "";
+
+        }
+
+        const packageName = card.querySelector("h3");
+
+        const packagePrice = card.querySelector("h4");
+
+        const packageItems = card.querySelectorAll("ul li");
+
+
+        if (!packageName || !packagePrice) {
+
+            console.warn(
+                "INOVA RAW: FALTAN DATOS EN UNA TARJETA DE PAQUETE."
+            );
+
+            return "";
+
+        }
+
+
+        // NOMBRE DEL PAQUETE
+
+        const name = packageName.textContent.trim();
+
+        const price = packagePrice.textContent.trim();
+
+
+        // SERVICIOS INCLUIDOS
+
+        const services = Array.from(packageItems)
+
+            .map(item => item.textContent.trim())
+
+            .filter(Boolean);
+
+
+        // CONSTRUIR MENSAJE
+
+        let message =
+
+            "HOLA, QUIERO CONTRATAR EL " +
+            name +
+            " DE GRADUACIÓN.\n\n";
+
+
+        message += "INCLUYE:\n";
+
+
+        services.forEach(service => {
+
+            message += "- " + service + "\n";
+
+        });
+
+
+        message += "\nPRECIO: " + price;
+
+
+        // CONVERTIR TODO A MAYÚSCULAS
+
+        return message.toLocaleUpperCase("es-SV");
+
+    }
+
+
+    /* =====================================================
+       12. CONFIGURAR BOTONES DE CONTRATACIÓN
+    ===================================================== */
+
+    packageButtons.forEach(button => {
+
+        const card = button.closest(".card");
+
+        if (!card) {
+
+            return;
+
+        }
+
+
+        const message = generateWhatsAppMessage(card);
+
+        if (!message) {
+
+            return;
+
+        }
+
+
+        // GENERAR ENLACE AUTOMÁTICO
+
+        const whatsappURL =
+
+            "https://wa.me/" +
+            CONFIG.whatsapp +
+            "?text=" +
+            encodeURIComponent(message);
+
+
+        button.setAttribute("href", whatsappURL);
+
+        button.setAttribute("target", "_blank");
+
+        button.setAttribute("rel", "noopener noreferrer");
+
+
+        const packageName = card.querySelector("h3");
+
+        if (packageName) {
+
+            button.setAttribute(
+                "aria-label",
+                "CONTRATAR " + packageName.textContent.trim()
+            );
+
+        }
+
+    });
+
+
+    /* =====================================================
+       13. AÑO AUTOMÁTICO DEL FOOTER
+    ===================================================== */
 
     if (currentYear) {
 
@@ -325,14 +495,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =================================================
-       11. EFECTO DEL HEADER AL DESPLAZARSE
-    ================================================= */
+    /* =====================================================
+       14. EFECTO DEL HEADER AL DESPLAZARSE
+    ===================================================== */
 
     function updateHeader() {
 
         if (!header) {
+
             return;
+
         }
 
         if (window.scrollY > 50) {
@@ -357,9 +529,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHeader();
 
 
-    /* =================================================
-       12. ANIMACIÓN DE TARJETAS DE PAQUETES
-    ================================================= */
+    /* =====================================================
+       15. ANIMACIONES DE LAS TARJETAS
+    ===================================================== */
 
     if ("IntersectionObserver" in window) {
 
@@ -382,7 +554,9 @@ document.addEventListener("DOMContentLoaded", () => {
             },
 
             {
+
                 threshold: 0.15
+
             }
 
         );
@@ -407,11 +581,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =================================================
-       13. COMPROBACIÓN DE CARGA DE FOTOGRAFÍAS
-    ================================================= */
+    /* =====================================================
+       16. COMPROBACIÓN DE CARGA DE FOTOGRAFÍAS
+    ===================================================== */
 
     galleryImages.forEach(image => {
+
+
+        // ERROR AL CARGAR
 
         image.addEventListener("error", () => {
 
@@ -425,6 +602,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
+        // CARGA CORRECTA
+
         image.addEventListener("load", () => {
 
             image.classList.remove("image-error");
@@ -432,7 +611,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // COMPROBAR IMÁGENES QUE YA TERMINARON DE CARGAR
+        // COMPROBAR IMÁGENES YA CARGADAS
 
         if (image.complete && image.naturalWidth === 0) {
 
@@ -443,12 +622,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       14. PROTECCIÓN DEL MENÚ CONTEXTUAL
-    ================================================= */
+    /* =====================================================
+       17. PROTECCIÓN DEL MENÚ CONTEXTUAL
+    ===================================================== */
 
     document.querySelectorAll(
+
         ".gallery-item img, .about-image img"
+
     ).forEach(image => {
 
         image.addEventListener("contextmenu", event => {
@@ -460,9 +641,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       15. EVITAR ARRASTRAR FOTOGRAFÍAS
-    ================================================= */
+    /* =====================================================
+       18. EVITAR ARRASTRAR FOTOGRAFÍAS
+    ===================================================== */
 
     document.querySelectorAll("img").forEach(image => {
 
@@ -477,21 +658,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       16. VALIDACIÓN DE ENLACES DE WHATSAPP
-    ================================================= */
+    /* =====================================================
+       19. VALIDACIÓN DE ENLACES DE WHATSAPP
+    ===================================================== */
 
-    document.querySelectorAll(
-        ".contract-btn, .contact-whatsapp"
-    ).forEach(link => {
+    packageButtons.forEach(link => {
 
         const href = link.getAttribute("href");
 
-        if (!href || !href.includes("wa.me/")) {
+        if (!href || !href.includes("wa.me/" + CONFIG.whatsapp)) {
 
             console.warn(
+
                 "INOVA RAW: REVISA EL ENLACE DE WHATSAPP:",
+
                 link
+
             );
 
         }
@@ -499,27 +681,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       17. VALIDACIÓN DE BOTONES DE NAVEGACIÓN
-    ================================================= */
-
-    const validSections = [
-        "inicio",
-        "sobre",
-        "galeria",
-        "paquetes",
-        "contacto"
-    ];
+    /* =====================================================
+       20. VALIDACIÓN DEL MENÚ DE NAVEGACIÓN
+    ===================================================== */
 
     navButtons.forEach(button => {
 
         const sectionId = button.dataset.section;
 
-        if (!validSections.includes(sectionId)) {
+        if (!CONFIG.validSections.includes(sectionId)) {
 
             console.warn(
+
                 "INOVA RAW: BOTÓN DE NAVEGACIÓN NO VÁLIDO:",
+
                 button
+
             );
 
         }
@@ -527,16 +704,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =================================================
-       18. INICIALIZAR SITIO WEB
-    ================================================= */
+    /* =====================================================
+       21. VALIDAR TARJETAS DE PAQUETES
+    ===================================================== */
+
+    cards.forEach((card, index) => {
+
+        const name = card.querySelector("h3");
+
+        const price = card.querySelector("h4");
+
+        const list = card.querySelector("ul");
+
+        const button = card.querySelector(".contract-btn");
+
+
+        if (!name || !price || !list || !button) {
+
+            console.warn(
+
+                "INOVA RAW: TARJETA DE PAQUETE INCOMPLETA:",
+
+                index + 1
+
+            );
+
+        }
+
+    });
+
+
+    /* =====================================================
+       22. INICIALIZAR SITIO WEB
+    ===================================================== */
 
     showSection(CONFIG.defaultSection);
 
 
-    /* =================================================
-       19. MENSAJES DE CONSOLA
-    ================================================= */
+    /* =====================================================
+       23. MENSAJES DE CONSOLA
+    ===================================================== */
 
     console.log(
 
@@ -558,9 +765,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(
 
+        "%c PAQUETES DE GRADUACIÓN CONFIGURADOS CORRECTAMENTE.",
+
+        "color:#22c55e;font-size:12px;font-weight:bold;"
+
+    );
+
+
+    console.log(
+
+        "%c WHATSAPP: +503 7385-9232",
+
+        "color:#22c55e;font-size:12px;font-weight:bold;"
+
+    );
+
+
+    console.log(
+
         "%c SITIO WEB CARGADO CORRECTAMENTE.",
 
-        "color:#22c55e;font-size:12px;"
+        "color:#22c55e;font-size:12px;font-weight:bold;"
 
     );
 
