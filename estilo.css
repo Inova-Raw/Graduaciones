@@ -1,13 +1,10 @@
-
 /* =========================================
    INOVA RAW | ESTILOS PROFESIONALES
    DISEÑO PREMIUM NEGRO & GOLD
+   RESPONSIVE DESKTOP / TABLET / MÓVIL
 ========================================= */
 
-/* =========================================
-   VARIABLES
-========================================= */
-
+/* VARIABLES */
 :root {
     --black: #050505;
     --black-light: #0b0b0f;
@@ -22,10 +19,7 @@
     --transition: .35s ease;
 }
 
-/* =========================================
-   RESET GENERAL
-========================================= */
-
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -46,8 +40,7 @@ body {
     min-height: 100vh;
 }
 
-button,
-a {
+button, a {
     font-family: inherit;
 }
 
@@ -102,10 +95,7 @@ a {
     text-shadow: 0 0 20px rgba(214,177,61,.18);
 }
 
-/* =========================================
-   NAVEGACIÓN
-========================================= */
-
+/* NAVEGACIÓN */
 .nav {
     display: flex;
     justify-content: flex-end;
@@ -155,16 +145,11 @@ a {
     display: block;
 }
 
-/* =========================================
-   ANIMACIÓN DE SECCIONES
-========================================= */
-
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -172,7 +157,7 @@ a {
 }
 
 /* =========================================
-   HERO / INICIO
+   INICIO / HERO
 ========================================= */
 
 #inicio {
@@ -235,10 +220,7 @@ a {
     margin-bottom: 45px;
 }
 
-/* =========================================
-   BOTONES HERO
-========================================= */
-
+/* BOTONES HERO */
 .hero-buttons {
     display: flex;
     justify-content: center;
@@ -265,13 +247,6 @@ a {
     background: var(--gold-light);
     border-color: var(--gold-light);
     box-shadow: 0 12px 30px rgba(214,177,61,.2);
-}
-
-.main-btn:focus-visible,
-.nav-btn:focus-visible,
-.contract-btn:focus-visible {
-    outline: 2px solid var(--gold-light);
-    outline-offset: 4px;
 }
 
 /* =========================================
@@ -315,39 +290,65 @@ a {
 }
 
 /* =========================================
-   SOBRE MÍ
+   SOBRE MÍ - FOTOGRAFÍA COMPLETA
 ========================================= */
 
-.about-container {
-    max-width: 1150px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 70px;
-    align-items: center;
-}
-
-.about-image {
-    position: relative;
-    padding: 10px;
-    border: 1px solid rgba(214,177,61,.35);
-    border-radius: 25px;
-    background: var(--black-light);
-    box-shadow: var(--shadow);
+#sobre-mi {
     overflow: hidden;
 }
 
-.about-image img {
+.about-container {
     width: 100%;
-    height: 460px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 18px;
-    transition: transform .5s ease;
+    max-width: 1250px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(280px, 430px) minmax(0, 1fr);
+    gap: 65px;
+    align-items: center;
 }
 
+/* MARCO DE LA FOTOGRAFÍA */
+
+.about-image {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid rgba(214,177,61,.45);
+    border-radius: 22px;
+    background: #050505;
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.45),
+        0 0 25px rgba(214,177,61,.07);
+    overflow: hidden;
+}
+
+/* IMAGEN SIN RECORTES */
+
+.about-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 750px;
+    object-fit: contain;
+    object-position: center center;
+    border-radius: 14px;
+    background: #050505;
+    transition: transform .4s ease;
+}
+
+/* SIN ZOOM QUE RECORTE LA FOTO */
+
 .about-image:hover img {
-    transform: scale(1.04);
+    transform: scale(1.01);
+}
+
+/* TEXTO SOBRE MÍ */
+
+.about-content {
+    width: 100%;
+    min-width: 0;
 }
 
 .about-content h3 {
@@ -425,7 +426,7 @@ a {
 }
 
 /* =========================================
-   PAQUETES DE GRADUACIÓN
+   PAQUETES
 ========================================= */
 
 #paquetes {
@@ -451,11 +452,7 @@ a {
     position: relative;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(
-        145deg,
-        #121212,
-        #090909
-    );
+    background: linear-gradient(145deg,#121212,#090909);
     border: 1px solid rgba(214,177,61,.2);
     border-radius: 24px;
     padding: 38px 30px;
@@ -470,12 +467,7 @@ a {
     left: 0;
     width: 100%;
     height: 4px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        var(--gold),
-        transparent
-    );
+    background: linear-gradient(90deg,transparent,var(--gold),transparent);
 }
 
 .card:hover {
@@ -525,9 +517,7 @@ a {
     font-weight: 800;
 }
 
-/* =========================================
-   BOTONES CONTRATAR
-========================================= */
+/* BOTONES CONTRATAR */
 
 .contract-btn {
     width: 100%;
@@ -536,12 +526,7 @@ a {
     align-items: center;
     padding: 16px 20px;
     border-radius: 12px;
-    background: linear-gradient(
-        135deg,
-        var(--gold-dark),
-        var(--gold),
-        var(--gold-light)
-    );
+    background: linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
     color: #080808;
     text-decoration: none;
     font-size: 13px;
@@ -565,11 +550,7 @@ a {
     margin: auto;
     padding: 55px 45px;
     text-align: center;
-    background: linear-gradient(
-        145deg,
-        #121212,
-        #080808
-    );
+    background: linear-gradient(145deg,#121212,#080808);
     border: 1px solid rgba(214,177,61,.25);
     border-radius: 25px;
     box-shadow: var(--shadow);
@@ -698,9 +679,7 @@ a {
     font-weight: 600;
 }
 
-/* =========================================
-   SCROLLBAR
-========================================= */
+/* SCROLLBAR */
 
 ::-webkit-scrollbar {
     width: 9px;
@@ -711,11 +690,7 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-        180deg,
-        var(--gold-light),
-        var(--gold-dark)
-    );
+    background: linear-gradient(180deg,var(--gold-light),var(--gold-dark));
     border-radius: 20px;
 }
 
@@ -724,7 +699,7 @@ a {
 }
 
 /* =========================================
-   RESPONSIVE - TABLETS
+   TABLETS Y LAPTOPS
 ========================================= */
 
 @media (max-width: 1100px) {
@@ -748,8 +723,8 @@ a {
     }
 
     .about-container {
-        grid-template-columns: 320px 1fr;
-        gap: 40px;
+        grid-template-columns: minmax(260px, 350px) minmax(0, 1fr);
+        gap: 35px;
     }
 
     .gallery-grid {
@@ -757,13 +732,12 @@ a {
     }
 
     .cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2,minmax(0,1fr));
     }
-
 }
 
 /* =========================================
-   RESPONSIVE - TABLET PEQUEÑA
+   TABLETS
 ========================================= */
 
 @media (max-width: 850px) {
@@ -797,16 +771,26 @@ a {
         padding-top: 50px;
     }
 
+    /* FOTO COMPLETA EN TABLET */
+
     .about-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         max-width: 650px;
         gap: 35px;
     }
 
     .about-image {
-        max-width: 420px;
-        margin: auto;
         width: 100%;
+        max-width: 480px;
+        margin: auto;
+        padding: 9px;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: auto;
+        max-height: 750px;
+        object-fit: contain;
     }
 
     .about-content {
@@ -820,11 +804,10 @@ a {
     .gallery-grid {
         columns: 2 200px;
     }
-
 }
 
 /* =========================================
-   RESPONSIVE - CELULARES
+   CELULARES
 ========================================= */
 
 @media (max-width: 600px) {
@@ -889,8 +872,29 @@ a {
         font-size: 13px;
     }
 
+    /* FOTO COMPLETA EN CELULAR */
+
+    .about-container {
+        width: 100%;
+        grid-template-columns: minmax(0,1fr);
+        gap: 28px;
+    }
+
+    .about-image {
+        width: 100%;
+        max-width: 100%;
+        padding: 7px;
+        border-radius: 17px;
+    }
+
     .about-image img {
-        height: 350px;
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 11px;
     }
 
     .about-content h3 {
@@ -957,11 +961,10 @@ a {
         height: 42px;
         font-size: 30px;
     }
-
 }
 
 /* =========================================
-   RESPONSIVE - CELULARES PEQUEÑOS
+   CELULARES PEQUEÑOS
 ========================================= */
 
 @media (max-width: 380px) {
@@ -987,6 +990,9 @@ a {
         columns: 1;
     }
 
+    .about-image {
+        padding: 5px;
+    }
 }
 
 /* =========================================
@@ -1003,5 +1009,4 @@ a {
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
     }
-
 }
